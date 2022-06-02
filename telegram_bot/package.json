@@ -1,0 +1,30 @@
+{
+  "name": "@my-app/telegram_bot",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^16.9.4",
+    "@types/node-telegram-bot-api": "^0.57.1",
+    "@types/pg": "^8.6.5",
+    "@types/reflect-metadata": "^0.1.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "mongodb": "^3.7.3",
+    "node-telegram-bot-api": "^0.57.0",
+    "nodemon": "^2.0.16",
+    "reflect-metadata": "^0.1.13",
+    "telegraf": "^4.8.2",
+    "typeorm": "^0.3.6"
+  },
+  "scripts": {
+    "tsc": "tsc --build",
+    "clean": "rimraf build",
+    "build": "yarn clean && yarn tsc",
+    "start": "node .",
+    "dev": "nodemon ./src/index.ts"
+  }
+}

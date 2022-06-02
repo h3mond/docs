@@ -1,0 +1,74 @@
+version: '3.8'
+
+x-common-variables: &common-variables
+  POSTGRES_DB: aitu_docs
+  POSTGRES_USER: aitu_admin
+  POSTGRES_PASSWORD: VerySecret
+
+services:
+  mongodb:
+    image: mongo
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_ADMIN_USERNAME=${MONGO_ADMIN_USERNAME}
+      - MONGO_ADMIN_PASSWORD=${MONGO_ADMIN_PASSWORD}
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_DBUSER=${MONGO_DBUSER}
+      - MONGO_DBUSER_PASSWORD=${MONGO_DBUSER_PASSWORD}
+    env_file:
+      - .env
+    restart: "always"
+    volumes:
+      - mongodb:/data/db
+      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+
+
+      ## postgres_db:
+      ##   image: postgres
+      ##   restart: always
+      ##   volumes:
+      ##     - dbdata:/data/db
+      ##   ports:
+      ##     - "5432:5432"
+      ##   environment:
+      ##     <<: *common-variables
+      ##   container_name: docs-db
+
+    ## server:
+    ##   build:
+    ##     dockerfile: Dockerfile
+    ##     context: "./server"
+    ##   depends_on:
+    ##     - postgres_db
+    ##   volumes:
+    ##     - /app/uploaded_docs
+    ##     # - /app/node_modules
+    ##     # - ./server:/app
+    ##   ports:
+    ##     - "3001:3001"
+    ##   container_name: docs-server
+    ##   environment:
+    ##     <<: *common-variables
+    ##     POSTGRES_HOST: postgres_db
+
+    ## client:
+    ##   stdin_open: true
+    ##   build:
+    ##     dockerfile: Dockerfile
+    ##     context: ./client
+    ##   environment:
+    ##     - CHOKIDAR_USEPOLLING=true
+    ##   ports:
+    ##     - "3000:3000"
+    ##   container_name: docs-client
+    ##   # volumes:
+    ##     # - /app/node_modules
+    ##     # - ./client:/app
+
+volumes:
+  dbdata:
+  mongodb:
