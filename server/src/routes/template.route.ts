@@ -14,7 +14,7 @@ const router = Router();
 
 router.get("/all", allHandler);
 router.post("/add", upload.single("document"), addHandler);
-router.delete("/delete", deleteHandler);
+router.get("/delete", passport.authenticate("jwt", { session: false }), deleteHandler);
 router.get("/generate", generateHandler);
 
 export default router;

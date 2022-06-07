@@ -6,11 +6,10 @@ COPY package.json ./
 COPY package-lock.json ./
 COPY ./ ./
 
-RUN chown -R node:node /app
+RUN npm ci
 
-RUN npm i -g ts-node
-RUN npm i --silent
+RUN npm run build
 
 EXPOSE 3001
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

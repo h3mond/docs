@@ -1,11 +1,12 @@
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
+import {JWT_SECRET} from "../env";
 import {Account} from "../models/account.model";
 import {LoggerService} from "../services/logger.service";
 
 const passportConfig = passport => {
   passport.use(
     new JWTStrategy({
-      secretOrKey: "CHANGE_IT_TO_SECRET",
+      secretOrKey: JWT_SECRET,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     }, async (payload, done) => {
       try {

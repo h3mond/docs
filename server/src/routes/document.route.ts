@@ -17,5 +17,6 @@ router.get("/student", studentHandler);
 router.get("/download", downloadHandler);
 router.post("/sign", signHandler);
 router.post("/verify", upload.single("document"), verifyHandler);
+// router.post("/verify", verifyHandler);
 
 export default router;

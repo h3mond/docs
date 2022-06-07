@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../env";
 import { Account } from "../models/account.model";
 
 export class AccountService {
@@ -23,20 +24,28 @@ export class AccountService {
       _id: account._id,
       name: account.name,
     };
-    return jwt.sign(payload, "CHANGE_IT_TO_SECRET", {
-      expiresIn: 31556926,
+    return jwt.sign(payload, JWT_SECRET, {
+      expiresIn: 31556926 /* year */,
     });
   }
 
   /**
    *
    */
-  async register(name: string, surname: string, email: string, password: string) {
+  async register(
+    name: string,
+    surname: string,
+    email: string,
+    password: string
+  ) {
     const account = new Account();
     account.name = name;
     account.surname = surname;
     account.email = email;
-    const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt(10))
+    const hashedPassword = await bcrypt.hash(
+      password,
+      await bcrypt.genSalt(10)
+    );
     account.password = hashedPassword;
     await account.save();
   }

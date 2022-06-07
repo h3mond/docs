@@ -1,32 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import "./index.css";
+
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
-import { msalConfig } from "./authConfig";
 import { BrowserRouter } from "react-router-dom";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { msalConfig } from "./authConfig";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-
-root.render(
+ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <MsalProvider instance={msalInstance}>
-        <ThemeProvider theme={darkTheme}>
-          <App />
-        </ThemeProvider>
+        <App />
       </MsalProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById("root")
 );

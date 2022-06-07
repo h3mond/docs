@@ -11,7 +11,6 @@ const documentSchema = new Schema<IDocument>(
   {
     title: { type: String, required: true },
     studentEmail: { type: String, required: true },
-    cmsId: { type: Schema.Types.ObjectId, required: true },
     documentId: { type: Schema.Types.ObjectId, required: true },
   },
   {

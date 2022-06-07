@@ -23,7 +23,7 @@ const templateSchema = new Schema<ITemplate>(
 // templateSchema.virtual("id").get(function () {
 //   return this._id.toHexString();
 // });
-// 
+//
 // templateSchema.set("toJSON", {
 //   virtuals: true,
 // });

@@ -1,50 +1,50 @@
-import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
-
-import MainPage from "./pages/main.page";
-import DocumentsPage from "./pages/documents.page";
-import AddDocumentsPage from "./pages/add-documents.page";
-
-import { PageLayout } from "./components/page-layout.component";
-
-import { getAdmins } from "./utils";
+import { Route, Switch } from "react-router-dom";
+import { Flip, ToastContainer } from "react-toastify";
+import MsalRoute from "./Auth/MsalRoute";
+import PrivateRoute from "./Auth/PrivateRoute";
+import RestrictedRoute from "./Auth/RestrictedRoute";
+import AddPage from "./Components/Add";
+import Home from "./Components/Home";
+import Login from "./Components/Login";
+import Main from "./Components/Main";
+import SignUp from "./Components/SignUp";
+import Dashboard from "./Student/student/pages/Dashboard";
+import Profile from "./Student/student/pages/Profile";
+import Show from "./Student/student/pages/Show";
+import Verify from "./Student/student/pages/Verify";
 
 function App() {
   const { accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
-  const [isAdministrator, setIsAdministrator] = useState(false);
-
-  useEffect(() => {
-    async function _getAdmins() {
-      if (isAuthenticated) {
-        const admins = await getAdmins();
-        setIsAdministrator(admins.includes(accounts[0].username));
-      } else {
-        setIsAdministrator(false);
-      }
-    }
-    _getAdmins();
-  }, [isAuthenticated]);
 
   return (
-    <>
-      <PageLayout
-        isAuthenticated={isAuthenticated}
-        isAdministrator={isAdministrator}
-      ></PageLayout>
-      <Routes>
-        <Route path="/" element={<MainPage isAuthenticated={isAuthenticated}/>} />
-        <Route
-          path="documents"
-          element={<DocumentsPage isAuthenticated={isAuthenticated} />}
-        />
-        <Route
-          path="add"
-          element={<AddDocumentsPage/>}
-        />
-      </Routes>
-    </>
+    <div className="container pt-3">
+      <Switch>
+        <Route exact path="/" component={Main} />
+        <Route exact path="/verify" component={Verify} />
+        <MsalRoute exact path="/dashboard" component={Dashboard} />
+        <MsalRoute exact path="/profile" component={Profile} />
+        <MsalRoute exact path="/show/:documentId" component={Show} />
+        <PrivateRoute exact path="/home" component={Home} />
+        <PrivateRoute exact path="/add" component={AddPage} />
+        <RestrictedRoute exact path="/login" component={Login} />
+        <Route exact path="/register" component={SignUp} />
+      </Switch>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover
+        theme="colored"
+        limit={1}
+        transition={Flip}
+      />
+    </div>
   );
 }
 

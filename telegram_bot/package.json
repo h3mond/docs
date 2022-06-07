@@ -22,8 +22,8 @@
   },
   "scripts": {
     "tsc": "tsc --build",
-    "clean": "rimraf build",
-    "build": "yarn clean && yarn tsc",
+    "clean": "rm -rf build",
+    "build": "npx tsc",
     "start": "node .",
     "dev": "nodemon ./src/index.ts"
   }

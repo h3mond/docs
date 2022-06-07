@@ -9,8 +9,6 @@ COPY ./ ./
 RUN chown -R node:node /app
 
 RUN npm i -g ts-node
-RUN npm i --silent
-
-EXPOSE 3001
+RUN npm ci --silent
 
 CMD ["npm", "run", "dev"]

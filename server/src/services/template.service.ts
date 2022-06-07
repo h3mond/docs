@@ -1,7 +1,5 @@
-import createReport from "docx-templates";
-import {TemplateHandler} from "easy-template-x";
-import { createReadStream }  from "fs";
-import { readFile, writeFile } from "fs/promises";
+import { TemplateHandler } from "easy-template-x";
+import { createReadStream } from "fs";
 import mongoose from "mongoose";
 import { Template } from "../models/template.model";
 import { stream2buffer } from "../utils/stream2buff.util";
@@ -17,21 +15,16 @@ export class TemplateService {
   }
 
   /**
+   * @param {any} template
+   * @param {any} data
    * @returns {Promise<Buffer>}
    */
-  async generate(template: any, data = {}): Promise<Uint8Array> {
-    console.log('FILE ID', template.fileId);
-    const templateBuf = await this.getFileById(template.fileId)
-    const fileN = "./tmp/doc-" + (Math.random() + 1).toString(36).substring(7) + ".docx";
-    await writeFile(fileN, templateBuf);
-    const bb = await readFile(fileN);
+  async generate(template: any, data: any = {}): Promise<Uint8Array> {
+    const templateBuf = await this.getFileById(template.fileId);
+
     const handler = new TemplateHandler();
-    const datal = {
-      name: "Johnson",
-      email: "Test"
-    };
-    const buffer = await handler.process(bb, datal)
-    writeFile("./tmp/meg-a-name.docx", buffer);
+    const buffer = await handler.process(templateBuf, data);
+
     return buffer;
   }
 
@@ -47,7 +40,6 @@ export class TemplateService {
     description: string,
     mFile: Express.Multer.File
   ): Promise<any> {
-    console.log('File path', mFile);
     return new Promise((res, rej) => {
       createReadStream(mFile.path)
         .pipe(this.templatesBucket.openUploadStream(mFile.originalname))
@@ -72,8 +64,6 @@ export class TemplateService {
    * @returns {Promise<Buffer>}
    */
   async getFileById(id: mongoose.Types.ObjectId): Promise<Buffer> {
-    return await stream2buffer(
-      this.templatesBucket.openDownloadStream(id)
-    );
+    return await stream2buffer(this.templatesBucket.openDownloadStream(id));
   }
 }
