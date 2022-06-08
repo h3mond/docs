@@ -52,6 +52,6 @@
     "clean": "rm -rf build",
     "build": "npm run clean && npx tsc",
     "start": "node .",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "npx nodemon ./src/index.ts"
   }
 }

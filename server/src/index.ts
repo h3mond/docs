@@ -7,13 +7,14 @@ import { MONGODB_DB, MONGODB_HOST, MONGODB_PASS, MONGODB_USER } from "./env";
 import passport from "passport";
 import { passportConfig } from "./config/passport.config";
 
-const MONGO_URL = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}:27017/${MONGODB_DB}`;
+const MONGO_URL = `mongodb://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}:27017`;
 
 if (!existsSync("./tmp")) {
   mkdirSync("./tmp");
 }
 
 (async function () {
+  console.log("Connection string", MONGO_URL);
   await mongoose.connect(MONGO_URL);
 
   const port = 3001;

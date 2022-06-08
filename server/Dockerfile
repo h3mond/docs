@@ -8,9 +8,11 @@ COPY ./ ./
 
 RUN chown -R node:node /app
 
-RUN apt-get install libreoffice-core --no-install-recommends
+# RUN apt-get install libreoffice-core --no-install-recommends
+RUN apk add --no-cache icu-libs icu-dev libreoffice
 
 RUN npm i -g ts-node
+RUN npm i nodemon
 RUN npm ci
 
 EXPOSE 3001

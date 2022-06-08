@@ -2,7 +2,7 @@
 import { Composer, Markup, Scenes, session, Telegraf } from "telegraf";
 import {API} from "./api";
 
-const token = '5596770538:AAGPKQJWOhYrb-3XyXl4q7XlNw_hTOOAPOM';
+const token = process.env.TELEGRAM_BOT_TOKEN;
 if (token === undefined) {
   throw new Error('BOT_TOKEN must be provided!')
 }
@@ -13,7 +13,7 @@ documentScene.enter(async (ctx) => {
   try {
     const documents = await API.getTemplates();
     const keyboard = documents.map(d => Markup.button.text(d.title));
-    await ctx.reply('Choose document which you want to get', Markup.keyboard(keyboard).oneTime(true).resize(true))
+    await ctx.reply('Choose certificate which you want to get', Markup.keyboard(keyboard).oneTime(true).resize(true))
   } catch (e) {
     console.error('Error', e.message)
   }
