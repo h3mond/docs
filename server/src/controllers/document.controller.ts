@@ -138,7 +138,7 @@ export const downloadHandler = async (req: Request, res: Response) => {
     const fileBuff = await documentService.getFileByDocumentId(
       new mongoose.Types.ObjectId(String(document.documentId))
     );
-    const filepath = './tmp/' + document.title + '-' + (Math.random() + 1).toString(36).substring(7) + '.docx.cms';
+    const filepath = './tmp/' + document.title + '-' + (Math.random() + 1).toString(36).substring(7) + '.pdf';
     await writeFile(filepath, fileBuff)
     res.download(filepath, (err) => {
       if (err) {

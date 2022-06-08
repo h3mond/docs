@@ -10,9 +10,7 @@
 }
 
 .x-icon {
-  height: 1em;
-  width: 1em;
-  top: .125em;
+  margin-right: 10px;
   position: relative;
 }
 .x-alt {

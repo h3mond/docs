@@ -9,13 +9,16 @@ import { LoggerService } from "../services/logger.service";
 import NCAService from "../services/nca.service";
 import { TemplateService } from "../services/template.service";
 
+const libre = require('libreoffice-convert');
+libre.convertAsync = require('util').promisify(libre.convert);
+
 /**
  * Returns all all templates
  */
 export const allHandler = async (req: Request, res: Response) => {
   try {
     const templates = await Template.find({});
-    res.json(templates);
+    res.json(templates.reverse());
   } catch (e) {
     LoggerService.log.error("Error: " + e.message);
     res.status(500).json({
@@ -61,27 +64,27 @@ export const generateHandler = async (req: Request, res: Response) => {
       throw new Error("Student was not found");
     }
 
-    // generating docx file from template and saving it in tmp folder
+    // generating docx file from template
     const templateBuf = Buffer.from(await templateService.generate(template, student));
+    // converting it to pdf
+    const pdfBuf = await libre.convertAsync(templateBuf, '.pdf', undefined);
     // signing document with nca service
-    const signedDocument = await ncaService.sign(templateBuf.toString('base64'));
-    // const buf = new Buffer(signedDocument.cms, 'base64');
+    const signedDocument = await ncaService.sign(pdfBuf.toString('base64'));
     const buf = Buffer.from(signedDocument.cms, 'base64');
     const filepath = "./tmp/" + template.title + new Date().getTime();
-    // console.log('Signed Document', buf);
     await writeFile(filepath, buf);
 
     const document = await documentService.uploadDocument({
       email: email as string,
       title: template.title,
-      filename: template.title + '.docx.cms',
+      filename: template.title + '.pdf',
       filepath: filepath
     })
 
-    await unlink(filepath);
     res.json({
       id: document._id,
     });
+    unlink(filepath);
   } catch (e) {
     LoggerService.log.error("Error: " + e.message);
     res.status(500).json({

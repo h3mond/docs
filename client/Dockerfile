@@ -1,5 +1,5 @@
 # pull official base image
-FROM node
+FROM node:17.9.1-alpine3.15
 
 # set working directory
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY package-lock.json .
 # add app
 COPY . .
 
-RUN npm i
+RUN npm ci
 
 RUN mkdir ./node_modules/.cache && chmod -R 777 ./node_modules/.cache
 

@@ -1,4 +1,4 @@
-FROM node
+FROM node:17.9.1-alpine3.15
 
 WORKDIR /app
 
@@ -8,8 +8,10 @@ COPY ./ ./
 
 RUN chown -R node:node /app
 
+RUN apt-get install libreoffice-core --no-install-recommends
+
 RUN npm i -g ts-node
-RUN npm i --silent
+RUN npm ci
 
 EXPOSE 3001
 

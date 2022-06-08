@@ -1,42 +1,39 @@
 version: '3.8'
 
 services:
-  ncanode:
-    build:
-      dockerfile: Dockerfile
-      context: ./NCANode
-    container_name: "ncanode"
-    ports:
-      - 14579:14579
-    restart: "always"
+  # ncanode:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./NCANode
+  #   container_name: "ncanode"
+  #   ports:
+  #     - 14579:14579
+  #   restart: "always"
 
-  mongodb:
-    image: mongo
-    container_name: "mongodb"
-    ports:
-      - 27017:27017
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_ADMIN_USERNAME=${MONGO_ADMIN_USERNAME}
-      - MONGO_ADMIN_PASSWORD=${MONGO_ADMIN_PASSWORD}
-      - MONGO_DATABASE=${MONGO_DATABASE}
-      - MONGO_DBUSER=${MONGO_DBUSER}
-      - MONGO_DBUSER_PASSWORD=${MONGO_DBUSER_PASSWORD}
-    env_file:
-      - .env
-    restart: "always"
-    volumes:
-      - mongodb:/data/db
-      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+  # mongodb:
+  #   image: mongo:focal
+  #   container_name: "mongodb"
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+  #     - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+  #     - MONGO_ADMIN_USERNAME=${MONGO_ADMIN_USERNAME}
+  #     - MONGO_ADMIN_PASSWORD=${MONGO_ADMIN_PASSWORD}
+  #     - MONGO_DATABASE=${MONGO_DATABASE}
+  #     - MONGO_DBUSER=${MONGO_DBUSER}
+  #     - MONGO_DBUSER_PASSWORD=${MONGO_DBUSER_PASSWORD}
+  #   env_file:
+  #     - .env
+  #   restart: "always"
+  #   volumes:
+  #     - mongodb:/data/db
+  #     - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
 
   server:
     build:
       dockerfile: Dockerfile
       context: "./server"
-    depends_on:
-      - mongodb
-      - ncanode
     ports:
       - 3001:3001
     container_name: docs-server
@@ -51,12 +48,12 @@ services:
     volumes:
       - ./server:/app
 
-  telegram_bot:
-    build:
-      dockerfile: Dockerfile
-      context: "./telegram_bot"
-    volumes:
-      - ./telegram_bot:/app/
+        # telegram_bot:
+        #   build:
+        #     dockerfile: Dockerfile
+        #     context: "./telegram_bot"
+        #   volumes:
+        #     - ./telegram_bot:/app/
 
   client:
     stdin_open: true
@@ -65,7 +62,6 @@ services:
       context: ./client
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - API_HOST=server
     ports:
       - 3000:3000
     container_name: docs-client

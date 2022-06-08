@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
-import {SignOutButton} from "../Student/student/buttons/SignOutButton";
-const logo = require('../aitu-logo.png');
+import { SignOutButton } from "../Student/student/buttons/SignOutButton";
+const logo = require("../aitu-logo.png");
 
 interface Props {
   history: any;
@@ -24,12 +24,10 @@ const Navbar: FC<Props> = (props) => {
   };
 
   return (
-    <nav className="navbar pb-6" role="navigation" aria-label="main navigation">
-      <div className="navbar-brand">
+    <nav className="bd-navbar navbar pb-6" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand mr-3">
         <a className="navbar-item" style={{ padding: 0 }} href="/">
-          <img
-            src={logo}
-          />
+          <strong>AITU</strong>
         </a>
 
         <a
@@ -48,32 +46,38 @@ const Navbar: FC<Props> = (props) => {
       </div>
 
       <div id="navbarBasicExample" className="navbar-menu">
+        <div className="navbar-start">
+          <a className="navbar-item">
+            <Link to="verify" className="navbar-item">Verify</Link>
+          </a>
+          {isMsal ? (
+            <>
+              <a className="navbar-item">
+                <Link to="profile" className="navbar-item">Profile</Link>
+              </a>
+            </>
+          ) : (
+            <>
+              <a className="navbar-item">
+                <Link to="add" className="navbar-item">
+                  Add document
+                </Link>
+              </a>
+            </>
+          )}
+        </div>
+
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <Link to="verify">
-                <a className="button">
-                  <strong>Verify</strong>
-                </a>
-              </Link>
               {isMsal ? (
                 <>
-                  <Link to="profile">
-                    <a className="button">
-                      <strong>Profile</strong>
-                    </a>
-                  </Link>
                   <SignOutButton />
                 </>
               ) : (
-                <>
-                  <Link to="add" className="button is-primary">
-                    Add document
-                  </Link>
-                  <a className="button is-light" onClick={logout}>
-                    Log out
-                  </a>
-                </>
+                <a className="button is-light" onClick={logout}>
+                  Log out
+                </a>
               )}
             </div>
           </div>

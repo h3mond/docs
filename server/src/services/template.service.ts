@@ -22,8 +22,15 @@ export class TemplateService {
   async generate(template: any, data: any = {}): Promise<Uint8Array> {
     const templateBuf = await this.getFileById(template.fileId);
 
+    const toShow = Object.assign({}, data._doc)
+    toShow.admissionDate = data.admissionDate.toLocaleDateString().replace(/\//g, '.'),
+    toShow.graduationDate = data.admissionDate.toLocaleDateString().replace(/\//g, '.'),
+    toShow.birthdate = data.admissionDate.toLocaleDateString().replace(/\//g, '.')
+
+    console.log(toShow);
+
     const handler = new TemplateHandler();
-    const buffer = await handler.process(templateBuf, data);
+    const buffer = await handler.process(templateBuf, toShow);
 
     return buffer;
   }
